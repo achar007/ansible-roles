@@ -1,0 +1,4 @@
+- hosts: home-lab1
+  become: true
+  roles:
+    - my_webserver_role

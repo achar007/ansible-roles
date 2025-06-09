@@ -1,0 +1,32 @@
+---
+# tasks file for my_webserver_role
+
+- name: Ensure apt cache is updated
+  ansible.builtin.apt:
+    update_cache: yes
+
+- name: Install nginx
+  ansible.builtin.package:
+    name: nginx
+    state: present
+
+- name: Deploy index.html
+  ansible.builtin.copy:
+    src: index.html
+    dest: /var/www/html/index.html
+    owner: "{{ nginx_user }}"
+    group: "{{ nginx_user }}"
+
+- name: Deploy nginx config
+  ansible.builtin.template:
+    src: nginx.conf.j2
+    dest: /etc/nginx/sites-available/default
+    owner: root
+    group: root
+  notify: Restart Nginx
+
+- name: Ensure nginx is running
+  ansible.builtin.service:
+    name: nginx
+    state: started
+    enabled: true
