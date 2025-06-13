@@ -31,6 +31,19 @@ my_webserver_role/
     └── main.yml
 ```
 
+## Role Directory Structure Explained
+
+When you run `ansible-galaxy role init my_webserver_role`, the following files and folders are generated:
+
+- `defaults/`: Default variables for the role.
+- `files/`: Static files to be copied to the target hosts.
+- `handlers/`: Handlers, typically used for service restarts or notifications.
+- `meta/`: Metadata about the role, such as dependencies.
+- `tasks/`: Main list of tasks to execute in the role.
+- `templates/`: Jinja2 templates to be rendered and deployed.
+- `vars/`: Other variables for the role.
+- `README.md`: Documentation for the role.
+
 ## 2. Deploy the Web Server
 
 Run the playbook to deploy Nginx and your web content:
@@ -80,6 +93,23 @@ PLAY RECAP ...
 ## 5. Customization
 - Edit `files/index.html` to change the web page content.
 - Edit `templates/nginx.conf.j2` for custom Nginx configuration.
+
+## 6. Using this Role in Another Playbook
+
+You can include `my_webserver_role` in any playbook by referencing it under the `roles` section. For example:
+
+```yaml
+- hosts: all
+  become: yes
+  roles:
+    - my_webserver_role
+```
+
+Save this as `site.yml` or any playbook file, and run it with:
+
+```bash
+ansible-playbook site.yml
+```
 
 ---
 
